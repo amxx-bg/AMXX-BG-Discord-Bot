@@ -9,6 +9,7 @@
   "author": "Evil (Stf Kolev)",
   "license": "ISC",
   "dependencies": {
+    "canvas": "^2.5.0",
     "discord.js": "^11.4.2",
     "eslint": "^5.12.0"
   }

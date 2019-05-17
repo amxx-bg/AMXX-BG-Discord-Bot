@@ -1,8 +1,8 @@
 const { RichEmbed } = require('discord.js');
 
 module.exports = {
-    name: 'kick',
-    description: 'Kick member from the discord server',
+    name: 'ban',
+    description: 'Ban member from the discord server',
 
     cooldown: 5,
 
@@ -11,22 +11,22 @@ module.exports = {
 
     execute(message, args) {
         if(!message.mentions.users.size)
-            return message.reply('You need to tag an user in order to kick them');
+            return message.reply('You need to tag an user in order to ban them');
 
-        if(message.member.hasPermission('KICK_MEMBERS')) {
+        if(message.member.hasPermission('BAN_MEMBERS')) {
             const taggedUser = message.mentions.users.first();
 
             if(args.length < 2)
-                message.channel.send('The correct usage is: !kick @user reason');
+                message.channel.send('The correct usage is: !ban @user reason');
             else {
                 const reason = args.slice(1).join(' ');
 
-                const kickMessage = new RichEmbed()
+                const banMessage = new RichEmbed()
                     .setColor('0xFF0000')
-                    .setTitle('Kickstarter')
+                    .setTitle('Banhammer')
                     
                     .setAuthor(`${message.member.user.username}`, `${message.member.user.displayAvatarURL}`)
-                    .setDescription(`The reason that the user is going to be kicked for is ${reason}`)
+                    .setDescription(`The reason that the user is going to be banned for is ${reason}`)
                     
                     .addBlankField()
 
@@ -45,10 +45,11 @@ module.exports = {
                     const member = message.guild.member(taggedUser);
 
                     if(member) {
-                        message.channel.send(kickMessage);
-                        member.kick('You have been kicked for ```' + reason + ' ``` ')
+                        message.channel.send(banMessage);
+                        member.ban('You have been banned for ```' + reason + ' ``` ')
                     }
                 }
+
             }
         } else
             message.channel.send('```You do not have permissions for this command!```');
