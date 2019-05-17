@@ -2,8 +2,7 @@ const fs = require('fs');
 
 const Discord = require('discord.js');
 
-const { prefix } = require('./config/config.json');
-const secret = require('./config/secret.json');
+const { prefix, token } = require('./config/config.json');
 
 const client = new Discord.Client();
 
@@ -21,6 +20,7 @@ client.once('ready', () => {
     console.log('amxxbot is ready');
 });
 
+/*! Handling messages */
 client.on('message', message => {
     if(!message.content.startsWith(prefix) || message.author.bot)
         return;
@@ -39,4 +39,19 @@ client.on('message', message => {
         }
 });
 
-client.login(secret.token);
+/*! Handling server joins */
+client.on('guildMemberAdd', member => {
+    const channel = member.guild.channels.find(ch => ch.name === 'join');
+
+    if(!channel)
+        return;
+
+    const message = `
+        Welcome to ${message.guild.name}, ${member}!\n
+        Currently, we have {$message.guild.memberCount} members!\n
+        Your username is ${message.author.username} and your ID is ${message.author.id}\n
+    `;
+    channel.send(`Welcome to ${message.guild.name}, ${member}`);
+});
+
+client.login(token);
