@@ -4,6 +4,11 @@ module.exports = {
     name: 'kick',
     description: 'Kick member from the discord server',
 
+    cooldown: 5,
+
+    /*! Protection from DM */
+    guildOnly: true,
+
     execute(message, args) {
         if(!message.mentions.users.size)
             return message.reply('You need to tag an user in order to kick them');
