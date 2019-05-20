@@ -26,20 +26,26 @@ client.once('ready', () => {
 client.on('message', message => {
     if(!message.content.startsWith(prefix) || message.author.bot)
         return;
-    
+        
         const args = message.content.slice(prefix.length).split(/ +/);
         const commandName = args.shift().toLowerCase();
 
+        /*! Find the current command that is present as argument */
         const command = client.commands.get(commandName) || client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
 
-        if (!command) return;
+        /*! Check if the command is not supported */
+        if (!command) 
+            return;
 
+        /*! Check if sent command was in the server and was typed */
         if (command.guildOnly && message.channel.type !== 'text')
             return message.reply(`I can't execute that command inside DMs!`);
         
+        /*! Check for arguments */
         if (command.args && !args.length) {
             let reply = `You didn't provide any arguments, ${message.author}!`;
-    
+            
+            /*! Check if the command has usage field */
             if (command.usage) {
                 reply += `\nThe proper usage would be: \`${prefix}${command.name} ${command.usage}\``;
             }
